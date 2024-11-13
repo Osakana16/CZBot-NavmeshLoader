@@ -160,6 +160,16 @@ void CenterMessage(const char *buffer) {
 }
 
 
+void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, edict_t* pentIgnore, TraceResult* ptr) {
+	TRACE_LINE(vecStart, vecEnd, igmon, pentIgnore, ptr);
+}
+
+
+void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, IGNORE_GLASS iglass, edict_t* pentIgnore, TraceResult* ptr) {
+	TRACE_LINE(vecStart, vecEnd, igmon | iglass, pentIgnore, ptr);
+}
+
+
 C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS* pFunctionTable, meta_globals_t* pMGlobals, gamedll_funcs_t* pGamedllFuncs) {
     // this function is called when metamod attempts to load the plugin. Since it's the place
     // where we can tell if the plugin will be allowed to run or not, we wait until here to make

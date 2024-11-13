@@ -22,14 +22,6 @@
 #include <cassert>
 #include <unordered_map>
 
-void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, edict_t* pentIgnore, TraceResult* ptr) {
-	TRACE_LINE(vecStart, vecEnd, igmon, pentIgnore, ptr);
-}
-
-
-void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, IGNORE_GLASS iglass, edict_t* pentIgnore, TraceResult* ptr) {
-	TRACE_LINE(vecStart, vecEnd, igmon | iglass, pentIgnore, ptr);
-}
 
 namespace {
 	struct Color {

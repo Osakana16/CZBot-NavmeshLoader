@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.12.35209.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CZNavmesh", "CZNavmesh.vcxproj", "{FA969F92-0E92-4D03-94B5-59FFBFB1B926}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3C2AB67D-0C75-4944-891E-EAC6FE3681EE} = {3C2AB67D-0C75-4944-891E-EAC6FE3681EE}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CZNavmesh-Lib", "CZNavmesh-Lib\CZNavmesh-Lib.vcxproj", "{3C2AB67D-0C75-4944-891E-EAC6FE3681EE}"
 EndProject
