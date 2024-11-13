@@ -5,6 +5,13 @@ VisualStudioVersion = 17.12.35209.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CZNavmesh", "CZNavmesh.vcxproj", "{FA969F92-0E92-4D03-94B5-59FFBFB1B926}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CZNavmesh-Lib", "CZNavmesh-Lib\CZNavmesh-Lib.vcxproj", "{3C2AB67D-0C75-4944-891E-EAC6FE3681EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DCC3FCC6-B958-4E5D-BC63-3B27F6F5EDA1}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,6 +22,10 @@ Global
 		{FA969F92-0E92-4D03-94B5-59FFBFB1B926}.Debug|x86.Build.0 = Debug|Win32
 		{FA969F92-0E92-4D03-94B5-59FFBFB1B926}.Release|x86.ActiveCfg = Release|Win32
 		{FA969F92-0E92-4D03-94B5-59FFBFB1B926}.Release|x86.Build.0 = Release|Win32
+		{3C2AB67D-0C75-4944-891E-EAC6FE3681EE}.Debug|x86.ActiveCfg = Debug|Win32
+		{3C2AB67D-0C75-4944-891E-EAC6FE3681EE}.Debug|x86.Build.0 = Debug|Win32
+		{3C2AB67D-0C75-4944-891E-EAC6FE3681EE}.Release|x86.ActiveCfg = Release|Win32
+		{3C2AB67D-0C75-4944-891E-EAC6FE3681EE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

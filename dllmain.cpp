@@ -12,7 +12,7 @@
 #include <format>
 #include <numbers>
 #include <format>
-#include "navigation_map.h"
+#include "CZNavmesh-Lib/navigation_map.h"
 
 edict_t* host{};
 

@@ -343,26 +343,9 @@ namespace navmesh {
 		NavArea* m_hashTable[HASH_TABLE_SIZE]{};				///< hash table to optimize lookup by ID
 
 		/// returns a hash key for the given nav area ID
-		inline int ComputeHashKey(unsigned int id) const { return id & 0xFF; }
-		inline int WorldToGridX(float wx) const {
-			int x = (wx - m_minX) / m_cellSize;
-			if (x < 0)
-				x = 0;
-			else if (x >= m_gridSizeX)
-				x = m_gridSizeX - 1;
-
-			return x;
-		}
-
-		inline int WorldToGridY(float wy) const {
-			int y = (wy - m_minY) / m_cellSize;
-			if (y < 0)
-				y = 0;
-			else if (y >= m_gridSizeY)
-				y = m_gridSizeY - 1;
-
-			return y;
-		}
+		int ComputeHashKey(unsigned int id) const;
+		int WorldToGridX(float wx) const;
+		int WorldToGridY(float wy) const;
 	};
 
 	class PlaceDirectory {
@@ -399,6 +382,6 @@ namespace navmesh {
 
 		NavArea* FindFirstAreaInDirection(const Vector* start, NavDirType dir, float range, float beneathLimit, edict_t* traceIgnore = nullptr, Vector* closePos = nullptr);
 		bool Load(const std::string& Path_To_Nav);
-		void AddHidingSpots(HidingSpot* spot) { m_hidingSpots.push_back(spot); }
+		void AddHidingSpots(HidingSpot* spot);
 	};
 }

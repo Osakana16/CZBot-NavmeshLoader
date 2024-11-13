@@ -22,38 +22,6 @@
 #include <cassert>
 #include <unordered_map>
 
-fpos_t GET_FILE_SIZE(const std::string& Map_Name) {
-	fpos_t filesize = -1;
-	if (FILE* fp = fopen(("cstrike\\" + Map_Name).c_str(), "rb"); fp != nullptr) {
-		fseek(fp, 0, SEEK_END);
-		fgetpos(fp, &filesize);
-		fclose(fp);
-	} else if ((fp = fopen(("czero\\" + Map_Name).c_str(), "rb")) != nullptr) {
-		fseek(fp, 0, SEEK_END);
-		fgetpos(fp, &filesize);
-		fclose(fp);
-	}
-	return filesize;
-}
-
-struct Color {
-	int r, g, b;
-};
-
-bool InViewCone(edict_t* const self, const Vector& Origin) noexcept {
-	MAKE_VECTORS(self->v.angles);
-	const auto Vector_2D_Los = (Origin - self->v.origin).Make2D().Normalize();
-	const auto Dot = DotProduct(Vector_2D_Los, gpGlobals->v_forward.Make2D());
-	return (Dot > 0.50);
-}
-
-bool IsVisible(edict_t* const self, const Vector& Origin) noexcept {
-	// look through caller's eyes
-	TraceResult tr;
-	UTIL_TraceLine(self->v.origin + self->v.view_ofs, Origin, dont_ignore_monsters, ignore_glass, self, &tr);
-	return (tr.flFraction >= 1.0);	// line of sight is not established or valid
-}
-
 void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, edict_t* pentIgnore, TraceResult* ptr) {
 	TRACE_LINE(vecStart, vecEnd, igmon, pentIgnore, ptr);
 }
@@ -63,15 +31,50 @@ void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTER
 	TRACE_LINE(vecStart, vecEnd, igmon | iglass, pentIgnore, ptr);
 }
 
-edict_t* FindEntityByString(edict_t* pentStart, const char* szKeyword, const char* szValue) {
-	edict_t* pentEntity = FIND_ENTITY_BY_STRING(pentStart, szKeyword, szValue);
-	if (!FNullEnt(pentEntity))
-		return pentEntity;
-	return nullptr;
-}
+namespace {
+	struct Color {
+		int r, g, b;
+	};
 
-edict_t* FindEntityByClassname(edict_t* pentStart, const char* szName) {
-	return FindEntityByString(pentStart, "classname", szName);
+	fpos_t GET_FILE_SIZE(const std::string& Map_Name) {
+		fpos_t filesize = -1;
+		if (FILE* fp = fopen(("cstrike\\" + Map_Name).c_str(), "rb"); fp != nullptr) {
+			fseek(fp, 0, SEEK_END);
+			fgetpos(fp, &filesize);
+			fclose(fp);
+		} else if ((fp = fopen(("czero\\" + Map_Name).c_str(), "rb")) != nullptr) {
+			fseek(fp, 0, SEEK_END);
+			fgetpos(fp, &filesize);
+			fclose(fp);
+		}
+		return filesize;
+	}
+
+	bool InViewCone(edict_t* const self, const Vector& Origin) noexcept {
+		MAKE_VECTORS(self->v.angles);
+		const auto Vector_2D_Los = (Origin - self->v.origin).Make2D().Normalize();
+		const auto Dot = DotProduct(Vector_2D_Los, gpGlobals->v_forward.Make2D());
+		return (Dot > 0.50);
+	}
+
+	bool IsVisible(edict_t* const self, const Vector& Origin) noexcept {
+		// look through caller's eyes
+		TraceResult tr;
+		UTIL_TraceLine(self->v.origin + self->v.view_ofs, Origin, dont_ignore_monsters, ignore_glass, self, &tr);
+		return (tr.flFraction >= 1.0);	// line of sight is not established or valid
+	}
+
+
+	edict_t* FindEntityByString(edict_t* pentStart, const char* szKeyword, const char* szValue) {
+		edict_t* pentEntity = FIND_ENTITY_BY_STRING(pentStart, szKeyword, szValue);
+		if (!FNullEnt(pentEntity))
+			return pentEntity;
+		return nullptr;
+	}
+
+	edict_t* FindEntityByClassname(edict_t* pentStart, const char* szName) {
+		return FindEntityByString(pentStart, "classname", szName);
+	}
 }
 
 namespace navmesh {
@@ -167,6 +170,30 @@ namespace navmesh {
 			*normal = layer[i].normal;
 
 		return true;
+	}
+
+	int NavAreaGrid::ComputeHashKey(unsigned int id) const {
+		return id & 0xFF;
+	}
+
+	int NavAreaGrid::WorldToGridX(float wx) const {
+		int x = (wx - m_minX) / m_cellSize;
+		if (x < 0)
+			x = 0;
+		else if (x >= m_gridSizeX)
+			x = m_gridSizeX - 1;
+
+		return x;
+	}
+
+	int NavAreaGrid::WorldToGridY(float wy) const {
+		int y = (wy - m_minY) / m_cellSize;
+		if (y < 0)
+			y = 0;
+		else if (y >= m_gridSizeY)
+			y = m_gridSizeY - 1;
+
+		return y;
 	}
 
 	void NavArea::ComputePortal(const NavArea* to, NavDirType dir, Vector* center, float* halfWidth) const {
@@ -1450,4 +1477,6 @@ namespace navmesh {
 
 		m_hidingSpots.clear();
 	}
+
+	void NavigationMap::AddHidingSpots(HidingSpot* spot) { m_hidingSpots.push_back(spot); }
 }
